@@ -5,15 +5,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
     <title>Pokémon</title>
 </head>
 
 <body>
     <nav>
         <button onclick="view.showListOfPokemons()">Get more pokémons</button>
-        <button onclick="view.showPokemon('4', 'show_pokemon')">Get charmander</button>
+        <button onclick="view.getPokemon('4', 'show_pokemon')">Get charmander</button>
     </nav>
-    <section id="main"></section>
+    <section id="main">
+        <div id="list" class="list"></div>
+        <div id="modal" class="modal">
+            <div id='modal__card' class="modal__card">
+                <button id='modal__close' onclick="view.closeModal()">x</button>
+                <div id="modal__content"></div>
+            </div>
+        </div>
+    </section>
     <script src="main.js"></script>
 </body>
 

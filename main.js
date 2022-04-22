@@ -16,41 +16,68 @@ const model = {
         img: null,
         types: [],
         stats: []
+    },
+
+    nodes: {
+        main: document.getElementById('main'),
+        list: document.getElementById("list"),
+        pokemon: null,
+        modal: document.getElementById("modal"),
+        modalContent: document.getElementById("modal__content"),
+        showDescriptionButton: null
     }
 }
 
 const view = {
     clearList: function () {
-        var range = document.createRange();
-        range.selectNodeContents(document.getElementById("main"));
+        const range = document.createRange();
+        range.selectNodeContents(model.nodes.list);
         range.deleteContents();
     },
 
     render: function (param) {
-        this.clearList();
-
-        main = document.getElementById('main');
-        container = document.createElement('div');
-
         if (param === 'pokemon') {
-            p = document.createElement('p');
-            p.textContent = model.pokemon.name;
-            container.appendChild(p);
-            main.appendChild(container);
+            model.nodes.modalContent.innerHTML = '';
+            model.nodes.pokemon = document.createElement('div');
+            model.nodes.pokemon.textContent = model.pokemon.name;
+            model.nodes.modalContent.appendChild(model.nodes.pokemon);
+            model.nodes.modal.style.display = 'block';
+            window.onclick = function (event) {
+                if (event.target == model.nodes.modal) {
+                    model.nodes.modal.style.display = "none";
+                }
+            }
         }
 
         if (param === 'list') {
+            this.clearList();
             for (i in model.listOfPokemons) {
-                p = document.createElement('p');
-                p.textContent = model.listOfPokemons[i].name;
-                container.appendChild(p);
+                model.nodes.pokemon = document.createElement('div');
+                model.nodes.pokemon.textContent = model.listOfPokemons[i].name;
+                
+                let id = model.listOfPokemons[i].id.toString();
+                model.nodes.showDescriptionButton = document.createElement('button');
+                model.nodes.showDescriptionButton.setAttribute('id', id);
+                model.nodes.showDescriptionButton.addEventListener('click', () => this.showPokemonDescription(id));
+                model.nodes.showDescriptionButton.textContent = 'Info';
+
+                model.nodes.list.appendChild(model.nodes.pokemon);
+                model.nodes.list.appendChild(model.nodes.showDescriptionButton);
             }
-            main.appendChild(container);
+            model.nodes.main.appendChild(list);
         }
     },
 
-    showPokemon: function (idOrName, source) {
+    closeModal: function () {
+        model.nodes.modal.style.display = 'none';
+    },
+
+    getPokemon: function (idOrName, source) {
         controller.getPokemonByIdOrName(idOrName, source);
+    },
+
+    showPokemonDescription: function(id) {
+        this.getPokemon(id, 'show_pokemon');
     },
 
     showListOfPokemons: function () {
