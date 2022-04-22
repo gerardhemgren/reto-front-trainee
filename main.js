@@ -20,6 +20,35 @@ const model = {
 }
 
 const view = {
+    clearList: function () {
+        var range = document.createRange();
+        range.selectNodeContents(document.getElementById("main"));
+        range.deleteContents();
+    },
+
+    render: function (param) {
+        this.clearList();
+
+        main = document.getElementById('main');
+        container = document.createElement('div');
+
+        if (param === 'pokemon') {
+            p = document.createElement('p');
+            p.textContent = model.pokemon.name;
+            container.appendChild(p);
+            main.appendChild(container);
+        }
+
+        if (param === 'list') {
+            for (i in model.listOfPokemons) {
+                p = document.createElement('p');
+                p.textContent = model.listOfPokemons[i].name;
+                container.appendChild(p);
+            }
+            main.appendChild(container);
+        }
+    },
+
     showPokemon: function (idOrName, source) {
         controller.getPokemonByIdOrName(idOrName, source);
     },
@@ -58,13 +87,21 @@ const controller = {
         ]
 
         model.pokemon = pokemon;
-        model.listOfPokemons = [...model.listOfPokemons, pokemon];
 
-        if (model.listOfPokemons.length === model.params.offset) {
-            console.log(model.listOfPokemons);
+        // Añade cada pokémon iterado dentro de getListOfPokemons
+        // Esquiva añadir pokémon repetido al consultar por pokémon individualmente
+        if (!source) {
+            model.listOfPokemons = [...model.listOfPokemons, pokemon];
         }
+
+        // Espera a completar la lista de pokémons llamados antes de renderizarla
+        if (model.listOfPokemons.length === model.params.offset && source !== 'show_pokemon') {
+            view.render('list');
+        }
+
+        // Renderiza unicamente el pokémon consultado
         if (source === 'show_pokemon') {
-            console.log(pokemon);
+            view.render('pokemon');
         }
     },
 
