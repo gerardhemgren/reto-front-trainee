@@ -1,23 +1,41 @@
 const model = {
-    pokemon: {
-        id: null,
-        name: null
-    },
+    params: {
+        baseUrl: 'https://pokeapi.co/api/v2/pokemon',
+        limit: 9,
+        offsetApiUrl: null
+    }
 }
 
 const view = {
-    showPokemonInConsole: function () {
-        console.log(model.pokemon);
+    showPokemon: function (idOrName) {
+        controller.getPokemonByIdOrName(idOrName);
+    },
+
+    showListOfPokemons: function () {
+        controller.getListOfPokemons();
     }
 }
 
 const controller = {
     getPokemonByIdOrName: async function (idOrName) {
-        let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
+        let response = await fetch(model.params.baseUrl + '/' + idOrName);
         let data = await response.json();
-        model.pokemon.name = data.name;
-        view.showPokemonInConsole();
+        console.log(data.name);
+    },
+
+    getListOfPokemons: async function () {
+        let firstCallUrl = model.params.baseUrl + '?limit=' + model.params.limit + '&offset=0';
+        let response;
+        model.params.offsetApiUrl
+            ?
+            response = await fetch(model.params.offsetApiUrl)
+            :
+            response = await fetch(firstCallUrl)
+            ;
+        let data = await response.json();
+        model.params.offsetApiUrl = data.next;
+        console.log(data.results)
     }
 }
 
-controller.getPokemonByIdOrName('charmander');
+controller.getListOfPokemons();
