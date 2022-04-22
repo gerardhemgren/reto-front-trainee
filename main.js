@@ -24,7 +24,9 @@ const model = {
         pokemon: null,
         modal: document.getElementById("modal"),
         modalContent: document.getElementById("modal__content"),
-        showDescriptionButton: null
+        showDescriptionButton: null,
+        form: document.getElementById('form'),
+        errorMessage: document.createElement('p')
     }
 }
 
@@ -41,12 +43,7 @@ const view = {
             model.nodes.pokemon = document.createElement('div');
             model.nodes.pokemon.textContent = model.pokemon.name;
             model.nodes.modalContent.appendChild(model.nodes.pokemon);
-            model.nodes.modal.style.display = 'block';
-            window.onclick = function (event) {
-                if (event.target == model.nodes.modal) {
-                    model.nodes.modal.style.display = "none";
-                }
-            }
+            this.openModal();
         }
 
         if (param === 'list') {
@@ -54,7 +51,7 @@ const view = {
             for (i in model.listOfPokemons) {
                 model.nodes.pokemon = document.createElement('div');
                 model.nodes.pokemon.textContent = model.listOfPokemons[i].name;
-                
+
                 let id = model.listOfPokemons[i].id.toString();
                 model.nodes.showDescriptionButton = document.createElement('button');
                 model.nodes.showDescriptionButton.setAttribute('id', id);
@@ -68,67 +65,102 @@ const view = {
         }
     },
 
+    openModal: function () {
+        model.nodes.modal.style.display = 'block';
+        window.onclick = function (event) {
+            if (event.target == model.nodes.modal) {
+                model.nodes.modal.style.display = "none";
+            }
+        }
+    },
+
     closeModal: function () {
         model.nodes.modal.style.display = 'none';
+    },
+
+    searchPokemon: function () {
+        controller.getPokemonByIdOrName(model.nodes.form.search.value, 'show_pokemon');
     },
 
     getPokemon: function (idOrName, source) {
         controller.getPokemonByIdOrName(idOrName, source);
     },
 
-    showPokemonDescription: function(id) {
+    showPokemonDescription: function (id) {
         this.getPokemon(id, 'show_pokemon');
     },
 
     showListOfPokemons: function () {
         controller.getListOfPokemons();
+    },
+
+    showError: function () {
+        model.nodes.errorMessage.innerHTML = 'Pokemon no existe o compruebe su conexión a internet';
+        model.nodes.modalContent.appendChild(model.nodes.errorMessage);
+        this.openModal();
     }
 }
 
 const controller = {
     getPokemonByIdOrName: async function (idOrName, source) {
-        let response = await fetch(model.params.baseUrl + '/' + idOrName);
-        let data = await response.json();
+        let response = await fetch(model.params.baseUrl + '/' + idOrName)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    view.showError();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-        let pokemon = {
-            id: null,
-            name: null,
-            weight: null,
-            base_experience: null,
-            img: null,
-            types: [],
-            stats: []
+        let data = response;
+        if (data) {
+            buildPokemon();
         }
 
-        pokemon.id = data.id;
-        pokemon.name = data.name;
-        pokemon.weight = data.weight;
-        pokemon.base_experience = data.base_experience;
-        pokemon.img = data.sprites.other["official-artwork"].front_default;
-        pokemon.types = data.types;
-        pokemon.stats = [
-            { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
-            { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
-            { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
-            { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
-        ]
+        function buildPokemon() {
+            let pokemon = {
+                id: null,
+                name: null,
+                weight: null,
+                base_experience: null,
+                img: null,
+                types: [],
+                stats: []
+            }
 
-        model.pokemon = pokemon;
+            pokemon.id = data.id;
+            pokemon.name = data.name;
+            pokemon.weight = data.weight;
+            pokemon.base_experience = data.base_experience;
+            pokemon.img = data.sprites.other["official-artwork"].front_default;
+            pokemon.types = data.types;
+            pokemon.stats = [
+                { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
+                { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
+                { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
+                { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
+            ]
 
-        // Añade cada pokémon iterado dentro de getListOfPokemons
-        // Esquiva añadir pokémon repetido al consultar por pokémon individualmente
-        if (!source) {
-            model.listOfPokemons = [...model.listOfPokemons, pokemon];
-        }
+            model.pokemon = pokemon;
 
-        // Espera a completar la lista de pokémons llamados antes de renderizarla
-        if (model.listOfPokemons.length === model.params.offset && source !== 'show_pokemon') {
-            view.render('list');
-        }
+            // Añade cada pokémon iterado de getListOfPokemons
+            // Esquiva añadir pokémon repetido al consultar por pokémon individualmente
+            if (!source) {
+                model.listOfPokemons = [...model.listOfPokemons, pokemon];
+            }
 
-        // Renderiza unicamente el pokémon consultado
-        if (source === 'show_pokemon') {
-            view.render('pokemon');
+            // Espera a completar la lista de pokémons llamados antes de renderizarla
+            if (model.listOfPokemons.length === model.params.offset && source !== 'show_pokemon') {
+                view.render('list');
+            }
+
+            // Renderiza unicamente el pokémon consultado
+            if (source === 'show_pokemon') {
+                view.render('pokemon');
+            }
         }
     },
 
