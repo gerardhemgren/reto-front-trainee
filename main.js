@@ -111,8 +111,8 @@ const controller = {
                     view.showError();
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                view.showError();
             });
 
         let data = response;
@@ -185,3 +185,19 @@ const controller = {
 }
 
 controller.getListOfPokemons();
+
+function addScrollListener() {
+    window.addEventListener('scroll', () => {
+        const {
+            scrollTop,
+            scrollHeight,
+            clientHeight
+        } = document.documentElement;
+        if ((clientHeight + scrollTop) > scrollHeight - 0.5) {
+            if (model.listOfPokemons.length >= 9) {
+                controller.getListOfPokemons();
+            }
+        }
+    })
+}
+addScrollListener()

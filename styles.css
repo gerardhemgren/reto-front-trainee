@@ -1,3 +1,11 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 .modal {
     display: none;
     background-color: darkslategrey;
@@ -22,4 +30,5 @@
 .list {
     display: grid;
     grid-template-columns: auto;
+    padding-bottom: 150px;
 }
