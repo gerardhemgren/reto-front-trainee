@@ -48,6 +48,14 @@ html {
                 input {
                     border-radius: 8px;
                     margin: 0px 12px;
+                    border-style: none;
+                }
+
+                button {
+                    background-color: transparent;
+                    border-style: none;
+                    height: 100%;
+                    cursor: pointer;
                 }
             }
         }
@@ -73,6 +81,13 @@ html {
 
                 &:hover {
                     background-color: rgb(255, 255, 255);
+                    
+                    img {
+                        transform: rotate(-10deg);
+                        height: 122.5%;
+                        left: 50%;
+                        transition: 1s;
+                    }
                 }
 
                 img {

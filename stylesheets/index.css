@@ -44,6 +44,13 @@ html body .navbar form {
 html body .navbar form input {
   border-radius: 8px;
   margin: 0px 12px;
+  border-style: none;
+}
+html body .navbar form button {
+  background-color: transparent;
+  border-style: none;
+  height: 100%;
+  cursor: pointer;
 }
 html body .list {
   display: grid;
@@ -68,6 +75,12 @@ html body .list .list__card {
 }
 html body .list .list__card:hover {
   background-color: rgb(255, 255, 255);
+}
+html body .list .list__card:hover img {
+  transform: rotate(-10deg);
+  height: 122.5%;
+  left: 50%;
+  transition: 1s;
 }
 html body .list .list__card img {
   height: 120%;
