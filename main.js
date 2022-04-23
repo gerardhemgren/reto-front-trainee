@@ -21,10 +21,7 @@ const model = {
     nodes: {
         main: document.getElementById('main'),
         list: document.getElementById("list"),
-        listCard: null,
-        showDescriptionButton: null,
 
-        pokemon: null,
         modal: document.getElementById("modal"),
         modalContent: document.getElementById("modal__content"),
 
@@ -34,12 +31,6 @@ const model = {
 }
 
 const view = {
-    clearList: () => {
-        const range = document.createRange();
-        range.selectNodeContents(model.nodes.list);
-        range.deleteContents();
-    },
-
     render: function (param) {
         if (param === 'pokemon') {
             model.nodes.modalContent.textContent = '';
@@ -70,7 +61,7 @@ const view = {
                 weight,
                 baseExperience,
                 stats
-                );
+            );
 
             this.openModal();
         }
@@ -99,18 +90,24 @@ const view = {
 
                 let listCard = document.createElement('div');
                 listCard.classList.add('list__card');
-                listCard.addEventListener('click', () => this.showPokemonDescription(id)); 
+                listCard.addEventListener('click', () => this.showPokemonDescription(id));
                 listCard.append(
                     img,
                     idCard,
                     name,
                     types,
-                    );
+                );
 
-                model.nodes.list.appendChild(listCard);       
+                model.nodes.list.appendChild(listCard);
             }
             model.nodes.main.appendChild(list);
         }
+    },
+
+    clearList: () => {
+        const range = document.createRange();
+        range.selectNodeContents(model.nodes.list);
+        range.deleteContents();
     },
 
     openModal: () => {
