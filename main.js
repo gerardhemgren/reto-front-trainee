@@ -34,7 +34,7 @@ const model = {
 }
 
 const view = {
-    clearList: function () {
+    clearList: () => {
         const range = document.createRange();
         range.selectNodeContents(model.nodes.list);
         range.deleteContents();
@@ -42,7 +42,7 @@ const view = {
 
     render: function (param) {
         if (param === 'pokemon') {
-            model.nodes.modalContent.innerHTML = '';
+            model.nodes.modalContent.textContent = '';
             model.nodes.pokemon = document.createElement('div');
             model.nodes.pokemon.textContent = model.pokemon.name;
             model.nodes.modalContent.appendChild(model.nodes.pokemon);
@@ -72,24 +72,27 @@ const view = {
         }
     },
 
-    openModal: function () {
+    openModal: () => {
         model.nodes.modal.style.display = 'block';
         window.onclick = function (event) {
             if (event.target == model.nodes.modal) {
                 model.nodes.modal.style.display = "none";
             }
-        }
+        };
     },
 
-    closeModal: function () {
+    closeModal: () => {
         model.nodes.modal.style.display = 'none';
     },
 
-    searchPokemon: function () {
-        controller.getPokemonByIdOrName(model.nodes.form.search.value, 'show_pokemon');
+    searchPokemon: () => {
+        event.preventDefault();
+        if (model.nodes.form.search.value !== '') {
+            controller.getPokemonByIdOrName(model.nodes.form.search.value, 'show_pokemon');
+        }
     },
 
-    getPokemon: function (idOrName, source) {
+    getPokemon: (idOrName, source) => {
         controller.getPokemonByIdOrName(idOrName, source);
     },
 
@@ -97,12 +100,13 @@ const view = {
         this.getPokemon(id, 'show_pokemon');
     },
 
-    showListOfPokemons: function () {
+    showListOfPokemons: () => {
         controller.getListOfPokemons();
     },
 
     showError: function () {
-        model.nodes.errorMessage.innerHTML = 'Pokemon no existe o compruebe su conexión a internet';
+        model.nodes.pokemon.textContent = '';
+        model.nodes.errorMessage.textContent = 'Pokemon no existe o compruebe su conexión a internet';
         model.nodes.modalContent.appendChild(model.nodes.errorMessage);
         this.openModal();
     }
@@ -135,13 +139,13 @@ const controller = {
                 base_experience: data.base_experience,
                 img: data.sprites.other["official-artwork"].front_default,
                 types: data.types,
-                stats:  [
+                stats: [
                     { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
                     { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
                     { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
                     { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
                 ]
-            }
+            };
             model.pokemon = pokemon;
 
             // Añade cada pokémon iterado de getListOfPokemons

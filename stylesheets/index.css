@@ -2,36 +2,31 @@ html {
   height: 100%;
   font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 }
-
-body {
+html body {
   height: 100%;
   background-color: rgb(197, 197, 197);
   padding: 0px;
   margin: 0px;
 }
-
-.navbar {
+html body .navbar {
   position: fixed;
   width: 100%;
   margin: 0px;
   padding: 0px;
   background-color: rgb(68, 68, 68);
 }
-
-.navbar form {
+html body .navbar form {
   display: flex;
   justify-self: center;
   justify-content: space-around;
 }
-
-.list {
+html body .list {
   display: grid;
   grid-template-columns: repeat(3, 30vw);
   padding: 50px 5px 250px;
   justify-content: space-between;
 }
-
-.list__card {
+html body .list .list__card {
   text-transform: capitalize;
   font-size: 1.6vw;
   height: 25vh;
@@ -39,8 +34,7 @@ body {
   padding: 8px;
   background-color: rgb(235, 235, 235);
 }
-
-.modal {
+html body .modal {
   display: none;
   background-color: darkslategrey;
   position: fixed;
@@ -51,8 +45,7 @@ body {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
 }
-
-.modal__card {
+html body .modal .modal__card {
   text-transform: capitalize;
   background-color: #fefefe;
   margin: 15% auto;
