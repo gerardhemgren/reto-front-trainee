@@ -122,28 +122,19 @@ const controller = {
 
         function buildPokemon() {
             let pokemon = {
-                id: null,
-                name: null,
-                weight: null,
-                base_experience: null,
-                img: null,
-                types: [],
-                stats: []
+                id: data.id,
+                name: data.name,
+                weight: data.weight,
+                base_experience: data.base_experience,
+                img: data.sprites.other["official-artwork"].front_default,
+                types: data.types,
+                stats:  [
+                    { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
+                    { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
+                    { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
+                    { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
+                ]
             }
-
-            pokemon.id = data.id;
-            pokemon.name = data.name;
-            pokemon.weight = data.weight;
-            pokemon.base_experience = data.base_experience;
-            pokemon.img = data.sprites.other["official-artwork"].front_default;
-            pokemon.types = data.types;
-            pokemon.stats = [
-                { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
-                { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
-                { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
-                { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
-            ]
-
             model.pokemon = pokemon;
 
             // Añade cada pokémon iterado de getListOfPokemons
