@@ -6,7 +6,7 @@
 **MODEL**
 
 **params**
-Contiene los parámetros a utilizar en **getListOfPokemons**, tiene la posibilidad de cambiar la cantidad de pokémones solicitados en cada llamada. (en futura versión de la app este parámetro podría ser por parte del usuario)
+Contiene los parámetros a utilizar en **getListOfPokemons**, tiene la posibilidad de cambiar la cantidad de pokémones solicitados en cada llamada. (en futura versión de la app este parámetro podría ser elegido por parte del usuario)
 
 **listOfPokemons**
 Almacena todos los pokémones que han sido solicitados.
@@ -51,13 +51,16 @@ Parámetros:
 **getListOfPokemons**:
 Descripción:
 Realiza una petición (fetch) a la 'pokeapi'.
-Su finalidad es obtener 9 pokémones, y dejar listo el próximo pedido, el cual traería los 9 pokémones siguientes.
+Su finalidad es obtener 9 pokémones, y dejar lista la ruta del próximo pedido, el cual traería los 9 pokémones siguientes.
 
 La ruta del fetch se armará dependiendo de si es la primera consulta desde que se inicia la aplicación, o del estado del offset (lleva la cuenta de la cantidad de pokémones que se han pedido anteriormente).
 
 A su vez, llama a **getPokemonByIdOrName** para armar el modelo de cada uno de los 9 pokémones.
 
-//
+
+## OBSERVACIONES
+El endpoint de cada pokémon, devuelve varios links de imagenes del pokémon con distintos pesos de bytes.
+Se podría solicitar las de menor tamaño en el armado del listado de cada objeto pokémon. Cuando se solicita la descripción se podría hacer una nueva petición y agregar la imagen principal "official-artwork" dentro del modelo pokemon.
 
 ## URL:
 [URL](https://gerardhemgren.github.io/reto-front-trainee/)
