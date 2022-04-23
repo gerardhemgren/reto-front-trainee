@@ -1,0 +1,62 @@
+html {
+    height: 100%;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+body {
+    height: 100%;
+    background-color: rgb(197, 197, 197);
+    padding: 0px;
+    margin: 0px;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(68, 68, 68);
+}
+
+.navbar form {
+    display: flex;
+    justify-self: center;
+    justify-content: space-around;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 30vw);
+    padding: 50px 5px 250px;
+    justify-content: space-between;
+}
+
+.list__card {
+    text-transform: capitalize;
+    font-size: 1.6vw;
+    height: 25vh;
+    margin: 8px;
+    padding: 8px;
+    background-color: rgb(235, 235, 235);
+}
+
+.modal {
+    display: none;
+    background-color: darkslategrey;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__card {
+    text-transform: capitalize;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}

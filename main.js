@@ -21,10 +21,13 @@ const model = {
     nodes: {
         main: document.getElementById('main'),
         list: document.getElementById("list"),
+        listCard: null,
+        showDescriptionButton: null,
+
         pokemon: null,
         modal: document.getElementById("modal"),
         modalContent: document.getElementById("modal__content"),
-        showDescriptionButton: null,
+
         form: document.getElementById('form'),
         errorMessage: document.createElement('p')
     }
@@ -58,8 +61,12 @@ const view = {
                 model.nodes.showDescriptionButton.addEventListener('click', () => this.showPokemonDescription(id));
                 model.nodes.showDescriptionButton.textContent = 'Info';
 
-                model.nodes.list.appendChild(model.nodes.pokemon);
-                model.nodes.list.appendChild(model.nodes.showDescriptionButton);
+                model.nodes.listCard = document.createElement('div');
+                model.nodes.listCard.classList.add('list__card')
+                model.nodes.listCard.appendChild(model.nodes.pokemon);
+                model.nodes.listCard.appendChild(model.nodes.showDescriptionButton);
+                model.nodes.list.appendChild(model.nodes.listCard);
+                
             }
             model.nodes.main.appendChild(list);
         }
