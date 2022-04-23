@@ -11,17 +11,19 @@
 
 <body>
     <nav class="navbar">
+        <img src="icons/logo.png">
+        <p>Busca un pokémon por su nombre o número</p>
         <form id="form">
-            <input type="text" name="search" placeholder="search">
-            <input type="submit" onclick="view.searchPokemon()" value="Search"></button>
+            <input type="text" name="search" placeholder="  Nombre o número">
+            <input type="submit" onclick="view.searchPokemon()"></input>
         </form>
     </nav>
     <section id="main">
         <div id="list" class="list"></div>
         <div id="modal" class="modal">
             <div id='modal__card' class="modal__card">
-                <button id='modal__close' onclick="view.closeModal()">x</button>
-                <div id="modal__content"></div>
+                <button id='modal__close' onclick="view.closeModal()">X</button>
+                <div id="modal__content" class="modal__content"></div>
             </div>
         </div>
     </section>

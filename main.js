@@ -43,30 +43,71 @@ const view = {
     render: function (param) {
         if (param === 'pokemon') {
             model.nodes.modalContent.textContent = '';
-            model.nodes.pokemon = document.createElement('div');
-            model.nodes.pokemon.textContent = model.pokemon.name;
-            model.nodes.modalContent.appendChild(model.nodes.pokemon);
+
+            let img = document.createElement('img');
+            img.setAttribute('src', model.pokemon.img);
+
+            let name = document.createElement('div');
+            name.textContent = model.pokemon.name;
+
+            let weight = document.createElement('div');
+            weight.textContent = `Weight: ${model.pokemon.weight}`;
+
+            let baseExperience = document.createElement('div');
+            baseExperience.textContent = `Base experience: ${model.pokemon.base_experience}`;
+
+            let stats = document.createElement('div');
+            stats.classList.add('modal__stats')
+            for (s in model.pokemon.stats) {
+                let stat = document.createElement('div');
+                stat.textContent = `${model.pokemon.stats[s].name} ${model.pokemon.stats[s].stat}`;
+                stats.appendChild(stat);
+            }
+
+            model.nodes.modalContent.append(
+                img,
+                name,
+                weight,
+                baseExperience,
+                stats
+                );
+
             this.openModal();
         }
 
         if (param === 'list') {
             this.clearList();
             for (i in model.listOfPokemons) {
-                model.nodes.pokemon = document.createElement('div');
-                model.nodes.pokemon.textContent = model.listOfPokemons[i].name;
+                let img = document.createElement('img');
+                img.setAttribute('src', model.listOfPokemons[i].img);
 
                 let id = model.listOfPokemons[i].id.toString();
-                model.nodes.showDescriptionButton = document.createElement('button');
-                model.nodes.showDescriptionButton.setAttribute('id', id);
-                model.nodes.showDescriptionButton.addEventListener('click', () => this.showPokemonDescription(id));
-                model.nodes.showDescriptionButton.textContent = 'Info';
 
-                model.nodes.listCard = document.createElement('div');
-                model.nodes.listCard.classList.add('list__card')
-                model.nodes.listCard.appendChild(model.nodes.pokemon);
-                model.nodes.listCard.appendChild(model.nodes.showDescriptionButton);
-                model.nodes.list.appendChild(model.nodes.listCard);
-                
+                let idCard = document.createElement('div');
+                idCard.classList.add('card__id');
+                idCard.textContent = id;
+
+                let name = document.createElement('div');
+                name.textContent = model.listOfPokemons[i].name;
+
+                let types = document.createElement('div');
+                for (t in model.listOfPokemons[i].types) {
+                    let type = document.createElement('div');
+                    type.textContent = model.listOfPokemons[i].types[t].type.name;
+                    types.appendChild(type);
+                }
+
+                let listCard = document.createElement('div');
+                listCard.classList.add('list__card');
+                listCard.addEventListener('click', () => this.showPokemonDescription(id)); 
+                listCard.append(
+                    img,
+                    idCard,
+                    name,
+                    types,
+                    );
+
+                model.nodes.list.appendChild(listCard);       
             }
             model.nodes.main.appendChild(list);
         }
@@ -88,7 +129,8 @@ const view = {
     searchPokemon: () => {
         event.preventDefault();
         if (model.nodes.form.search.value !== '') {
-            controller.getPokemonByIdOrName(model.nodes.form.search.value, 'show_pokemon');
+            const input = model.nodes.form.search.value.toLowerCase();
+            controller.getPokemonByIdOrName(input, 'show_pokemon');
         }
     },
 
@@ -105,7 +147,8 @@ const view = {
     },
 
     showError: function () {
-        model.nodes.pokemon.textContent = '';
+        model.nodes.modalContent.textContent = '';
+        model.nodes.pokemon = document.createElement('div');
         model.nodes.errorMessage.textContent = 'Pokemon no existe o compruebe su conexión a internet';
         model.nodes.modalContent.appendChild(model.nodes.errorMessage);
         this.openModal();

@@ -1,61 +1,317 @@
+// Mobile first
+
 html {
     height: 100%;
     font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 
     body {
         height: 100%;
-        background-color: rgb(197, 197, 197);
+        background-color: rgb(223, 223, 223);
         padding: 0px;
         margin: 0px;
 
         .navbar {
             position: fixed;
+            z-index: 1;
+            top: 0px;
+            height: 120px;
             width: 100%;
             margin: 0px;
             padding: 0px;
-            background-color: rgb(68, 68, 68);
+            background-color: #41759d;
+            display: grid;
+            grid-template-rows: 33% 33% 33%;
+            border-radius: 0 0 8px 8px;
+
+            img {
+                height: 100%;
+                justify-self: center;
+                grid-row: 1 / 2;
+            }
+
+            p {
+                padding: 0px;
+                margin: 0px;
+                justify-self: center;
+                align-self: center;
+                color: white;
+                grid-row: 2 / 3;
+            }
 
             form {
+                grid-row: 3 / 4;
                 display: flex;
-                justify-self: center;
-                justify-content: space-around;
+                width: 100%;
+                height: 80%;
+                justify-content: center;
+
+                input {
+                    border-radius: 8px;
+                    margin: 0px 12px;
+                }
             }
         }
 
         .list {
             display: grid;
-            grid-template-columns: repeat(3, 30vw);
-            padding: 50px 5px 250px;
-            justify-content: space-between;
-        
+            grid-template-columns: repeat(1, 90%);
+            padding: 120px 5px 250px;
+            justify-content: center;
+
             .list__card {
                 text-transform: capitalize;
-                font-size: 1.6vw;
-                height: 25vh;
-                margin: 8px;
+                border-radius: 8px;
+                font-size: 1.6vh;
+                height: 7vh;
+                margin: 20px 0 0 0;
                 padding: 8px;
-                background-color: rgb(235, 235, 235);
+                background-color: rgb(243, 243, 243);
+                position: relative;
+                display: grid;
+                grid-template-columns: 20% 60%;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(255, 255, 255);
+                }
+
+                img {
+                    height: 120%;
+                    position: absolute;
+                    left: 80%;
+                }
+
+                /* id */
+                .card__id {
+                    margin-left: 10%;
+                    grid-row: 1 / 3;
+                    font-size: 3vh;
+                    font-weight: 400;
+                }
+
+                :nth-child(3) {
+                    font-size: 2.2vh;
+                    align-self: flex-end;
+                    padding-bottom: 4%;
+                    grid-row: 1 / 2;
+                }
+
+                /* types */
+                :nth-child(4) {
+                    grid-row: 2 / 3;
+                    display: flex;
+                    width: 80%;
+                    justify-content: space-between;
+                    text-align: center;
+                    align-items: center;
+
+                    div:nth-of-type(odd) {
+                        width: 45%;
+                        border-radius: 8px;
+                        border: 1px solid rgba(0, 0, 0, 0.5);
+                    }
+
+                    div:nth-of-type(even) {
+                        width: 45%;
+                        border-radius: 8px;
+                        border: 1px solid rgba(0, 0, 0, 0.5);
+                    }
+                }
             }
         }
 
         .modal {
             display: none;
-            background-color: darkslategrey;
             position: fixed;
             z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        
+            background-color: rgba(80, 80, 80, 0.4);
+
             .modal__card {
-                text-transform: capitalize;
                 background-color: #fefefe;
-                margin: 15% auto;
+                margin: 40% auto;
                 padding: 20px;
-                border: 1px solid #888;
+                border-radius: 8px;
                 width: 80%;
+                height: 60%;
+
+                button {
+                    position: absolute;
+                    right: 10%;
+                    border-style: none;
+                    border-radius: 50%;
+                    height: 40px;
+                    width: 40px;
+                    background-color: rgb(139, 139, 139);
+                    font-size: 1.5vh;
+                    color: white;
+                }
+
+                .modal__content {
+                    div {
+                        text-transform: capitalize;
+                    }
+
+                    img {
+                        height: 40%;
+                        position: absolute;
+                        bottom: 10%;
+                        left: 10%;
+                    }
+
+                    /* name */
+                    :nth-child(2) {
+                        font-size: 10vw;
+                        padding: 4% 2% 4%;
+                    }
+
+                    /* weight */
+                    :nth-child(3) {
+                        font-size: 4.5vw;
+                        padding-left: 4%;
+                    }
+
+                    /* base experience */
+                    :nth-child(4) {
+                        font-size: 4.5vw;
+                        padding-left: 4%;
+                    }
+
+                    .modal__stats {
+                        background-color: rgb(238, 238, 238);
+                        padding: 2%;
+                        margin-top: 4%;
+                        border-radius: 8px;
+
+                        div {
+                            font-size: 4.5vw;
+                            padding: 1% 10%;
+                            width: 80%;
+                            text-align-last: justify;
+                            background-color: inherit;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile landscape
+@media only screen and (min-width: 541px) {
+    html {
+
+        body {
+
+            .navbar {
+                height: 60px;
+                grid-template-columns: 30% 20% 50%;
+                width: 100%;
+
+                img {
+                    height: 70%;
+                    grid-row: 1 / 4;
+                    grid-column: 1 / 2;
+                }
+
+                p {
+                    grid-row: 2 / 3;
+                    grid-column: 2 / 3;
+                }
+
+                form {
+                    grid-row: 2 / 4;
+                    grid-column: 3 / 4;
+                }
+            }
+
+            .list {
+                padding: 60px 5px 250px;
+
+                .list__card {
+                    height: 16vh;
+
+                    /* id */
+                    .card__id {
+                        font-size: 8vh;
+                        font-weight: 300;
+                    }
+
+                    :nth-child(3) {
+                        font-size: 4vh;
+                    }
+
+                    /* types */
+                    :nth-child(4) {
+                        width: 80%;
+                        font-size: 1.2vw;
+                    }
+                }
+            }
+
+
+            .modal {
+
+                .modal__card {
+                    margin: 4% auto;
+
+                    button {
+                        position: absolute;
+                        right: 10%;
+                        border-style: none;
+                        border-radius: 50%;
+                        height: 40px;
+                        width: 40px;
+                        background-color: rgb(139, 139, 139);
+                        font-size: 3.5vh;
+                        color: white;
+                    }
+
+                    .modal__content {
+
+                        img {
+                            height: 70%;
+                            left: 65%;
+                        }
+
+                        /* name */
+                        :nth-child(2) {
+                            font-size: 5vw;
+                            padding: 0% 10% 1%;
+                        }
+
+                        /* weight */
+                        :nth-child(3) {
+                            font-size: 2.5vw;
+                            padding-left: 12%;
+                        }
+
+                        /* base experience */
+                        :nth-child(4) {
+                            font-size: 2.5vw;
+                            padding-left: 12%;
+                        }
+
+                        .modal__stats {
+                            padding: 1%;
+                            margin-top: 2%;
+                            margin-left: 10%;
+                            border-radius: 8px;
+                            width: 50%;
+
+                            div {
+                                font-size: 1.5vw;
+                                padding: 1% 10%;
+                                width: 40%;
+                                text-align-last: justify;
+                                background-color: inherit;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
