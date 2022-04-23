@@ -238,7 +238,7 @@ function addScrollListener() {
             scrollHeight,
             clientHeight
         } = document.documentElement;
-        if ((clientHeight + scrollTop) > scrollHeight - 1) {
+        if ((clientHeight + scrollTop) > scrollHeight - 5) {
             if (model.listOfPokemons.length >= 9) {
                 controller.getListOfPokemons();
             }
