@@ -21,7 +21,7 @@ Quizás sea conveniente ubicarlos dentro de la **VISTA**.
 (Se ubicaron dentro del model pensando en que iban a ser tratados como un objeto buscando evitar la duplicación de código en la función render de la vista).
 
 
-**VISTA**
+**VIEW**
 
 **render**
 Es la función principal de la app, renderiza la lista de pokémones y la tarjeta individual de cada pokémon.
@@ -31,7 +31,7 @@ Parámetros:
 - param: type string, es la referencia para que la vista renderice un listado de pokémones o la tarjeta individual.
 En futura versión quizas sea más claro usar un switch statement en vez de dos if statements.
 
-**Las otras funiones ayudan al renderizado y su comunicación con los controllers.**
+**Las otras funciones ayudan al renderizado y su comunicación con los controllers.**
 
 
 **CONTROLLERS**

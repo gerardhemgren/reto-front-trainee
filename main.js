@@ -15,7 +15,10 @@ const model = {
         base_experience: null,
         img: null,
         types: [],
-        stats: []
+        stats: [{
+            name: null,
+            stat: null
+        }]
     },
 
     nodes: {
@@ -90,7 +93,7 @@ const view = {
 
                 let listCard = document.createElement('div');
                 listCard.classList.add('list__card');
-                listCard.addEventListener('click', () => this.showPokemonDescription(id));
+                listCard.addEventListener('click', () => this.showPokemonDescription(id, 'show_pokemon_description'));
                 listCard.append(
                     img,
                     idCard,
@@ -135,8 +138,8 @@ const view = {
         controller.getPokemonByIdOrName(idOrName, source);
     },
 
-    showPokemonDescription: function (id) {
-        this.getPokemon(id, 'show_pokemon');
+    showPokemonDescription: function (id, source) {
+        controller.getPokemonByIdOrName(id, source);
     },
 
     showListOfPokemons: () => {
@@ -154,56 +157,105 @@ const view = {
 
 const controller = {
     getPokemonByIdOrName: async function (idOrName, source) {
-        let response = await fetch(model.params.baseUrl + '/' + idOrName)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
+        if (source !== 'show_pokemon_description') {
+            let response = await fetch(model.params.baseUrl + '/' + idOrName)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        view.showError();
+                    }
+                })
+                .catch(() => {
                     view.showError();
-                }
-            })
-            .catch(() => {
-                view.showError();
-            });
+                });
 
-        let data = response;
-        if (data) {
-            buildPokemon();
+            if (response) {
+                buildPokemon(response, 'any');
+            }
+        }
+        else {
+            let response = model.listOfPokemons.filter((pokemon) => pokemon.id === Number(idOrName))[0];
+            buildPokemon(response, 'show_pokemon_description');
         }
 
-        function buildPokemon() {
-            let pokemon = {
-                id: data.id,
-                name: data.name,
-                weight: data.weight,
-                base_experience: data.base_experience,
-                img: data.sprites.other["official-artwork"].front_default,
-                types: data.types,
-                stats: [
-                    { name: data.stats[0].stat.name, stat: data.stats[0].base_stat },
-                    { name: data.stats[1].stat.name, stat: data.stats[1].base_stat },
-                    { name: data.stats[2].stat.name, stat: data.stats[2].base_stat },
-                    { name: data.stats[5].stat.name, stat: data.stats[5].base_stat },
-                ]
-            };
-            model.pokemon = pokemon;
+        function buildPokemon(data, newSource) {
+            switch (newSource) {
+                case 'show_pokemon_description':
+                    model.pokemon = {
+                        id: data.id,
+                        name: data.name,
+                        weight: data.weight,
+                        base_experience: data.base_experience,
+                        img: data.img,
+                        types: data.types,
+                        stats: [
+                            {
+                                name: data.stats[0].name,
+                                stat: data.stats[0].stat
+                            },
+                            {
+                                name: data.stats[1].name,
+                                stat: data.stats[1].stat
+                            },
+                            {
+                                name: data.stats[2].name,
+                                stat: data.stats[2].stat
+                            },
+                            {
+                                name: data.stats[3].name,
+                                stat: data.stats[3].stat
+                            },
+                        ]
+                    };
+                    break;
 
-            // Añade cada pokémon iterado de getListOfPokemons
-            // Esquiva añadir pokémon repetido al consultar por pokémon individualmente
-            if (!source) {
-                model.listOfPokemons = [...model.listOfPokemons, pokemon];
-            }
-
-            // Espera a completar la lista de pokémons llamados antes de renderizarla
-            if (model.listOfPokemons.length === model.params.offset && source !== 'show_pokemon') {
-                view.render('list');
+                case 'any':
+                    model.pokemon = {
+                        id: data.id,
+                        name: data.name,
+                        weight: data.weight,
+                        base_experience: data.base_experience,
+                        img: data.sprites.other["official-artwork"].front_default,
+                        types: data.types,
+                        stats: [
+                            {
+                                name: data.stats[0].stat.name,
+                                stat: data.stats[0].base_stat
+                            },
+                            {
+                                name: data.stats[1].stat.name,
+                                stat: data.stats[1].base_stat
+                            },
+                            {
+                                name: data.stats[2].stat.name,
+                                stat: data.stats[2].base_stat
+                            },
+                            {
+                                name: data.stats[5].stat.name,
+                                stat: data.stats[5].base_stat
+                            },
+                        ]
+                    };
             }
 
             // Renderiza unicamente el pokémon consultado
-            if (source === 'show_pokemon') {
+            if (source === 'show_pokemon' || source == 'show_pokemon_description') {
                 view.render('pokemon');
             }
         }
+
+        // Añade cada pokémon iterado de getListOfPokemons
+        // Esquiva añadir pokémon repetido al consultar por pokémon individualmente
+        if (!source) {
+            model.listOfPokemons = [...model.listOfPokemons, model.pokemon];
+        }
+
+        // Espera a completar la lista de pokémons llamados antes de renderizarla
+        if (model.listOfPokemons.length !== model.params.offset) {
+            view.render('list');
+        }
+
     },
 
     getListOfPokemons: async function () {
@@ -219,11 +271,11 @@ const controller = {
 
         model.params.offsetApiUrl = data.next;
 
-        for (let pokemon in data.results) {
+        data.results.forEach(pokemon => {
             model.params.offset += 1;
-            this.getPokemonByIdOrName(data.results[pokemon].name);
-        }
-    }
+            this.getPokemonByIdOrName(pokemon.name);
+        })
+    },
 }
 
 controller.getListOfPokemons();
@@ -235,7 +287,7 @@ function addScrollListener() {
             scrollHeight,
             clientHeight
         } = document.documentElement;
-        if ((clientHeight + scrollTop) > scrollHeight - 5) {
+        if ((clientHeight + scrollTop) > scrollHeight - 1) {
             if (model.listOfPokemons.length >= 9) {
                 controller.getListOfPokemons();
             }
