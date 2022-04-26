@@ -175,7 +175,7 @@ const controller = {
             }
         }
         else {
-            let response = model.listOfPokemons.filter((pokemon) => pokemon.id === Number(idOrName))[0];
+            let response = model.listOfPokemons.find((pokemon) => pokemon.id === Number(idOrName));
             buildPokemon(response, 'show_pokemon_description');
         }
 
