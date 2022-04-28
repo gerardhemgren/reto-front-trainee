@@ -57,10 +57,13 @@ La ruta del fetch se armará dependiendo de si es la primera consulta desde que 
 
 A su vez, llama a **getPokemonByIdOrName** para armar el modelo de cada uno de los 9 pokémones.
 
+**getListOfRecentlyViewedPokemons**:
+Descripción:
+Toma los ids de pokémons que estén alojados en el localStorage y los parsea como un array. Cada id que se encuentre va a ser el parámetro a pasar cuando se invoque la función **getPokemonByIdOrName** y luego renderiza el componente con los pokémones insertados.
 
-## OBSERVACIONES
-El endpoint de cada pokémon, devuelve varios links de imagenes del pokémon con distintos pesos de bytes.
-Se podría solicitar las de menor tamaño en el armado del listado de cada objeto pokémon. Cuando se solicita la descripción se podría hacer una nueva petición y agregar la imagen principal "official-artwork" dentro del modelo pokemon.
+**addRecentlyViewedPokemonToLocalStorage**:
+Descripción:
+Parsea a un array los ids de pokémones existentes, le adiciona el nuevo id de la tarjeta de pokémon seleccionada, invoca al método Set el cual elimina duplicados (en el caso que se seleccione varias veces la misma tarjeta) y agrega los últimos 3 ids del nuevo array en formato string para poder ser alojado dentro del localStorage.
 
 ## URL:
 [URL](https://gerardhemgren.github.io/reto-front-trainee/)

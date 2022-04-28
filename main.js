@@ -8,6 +8,8 @@ const model = {
 
     listOfPokemons: [],
 
+    listOfRecentlyViewedPokemons: [],
+
     pokemon: {
         id: null,
         name: null,
@@ -21,6 +23,7 @@ const model = {
     nodes: {
         main: document.getElementById('main'),
         list: document.getElementById("list"),
+        reviewed_list: document.getElementById("reviewed__list"),
 
         modal: document.getElementById("modal"),
         modalContent: document.getElementById("modal__content"),
@@ -68,6 +71,7 @@ const view = {
 
         if (param === 'list') {
             this.clearList();
+
             for (i in model.listOfPokemons) {
                 let img = document.createElement('img');
                 img.setAttribute('src', model.listOfPokemons[i].img);
@@ -102,6 +106,29 @@ const view = {
             }
             model.nodes.main.appendChild(list);
         }
+
+        if (param === 'recently') {
+            for (i in model.listOfRecentlyViewedPokemons) {
+                let img = document.createElement('img');
+                img.setAttribute('src', model.listOfRecentlyViewedPokemons[i].img);
+
+                let id = model.listOfRecentlyViewedPokemons[i].id.toString();
+
+                let idCard = document.createElement('div');
+
+                let listCard = document.createElement('div');
+                listCard.classList.add('list__card');
+                listCard.addEventListener('click', () => this.showPokemonDescription(id));
+                listCard.append(
+                    img,
+                    idCard,
+                    name,
+                );
+
+                model.nodes.reviewed_list.appendChild(listCard);
+            }
+        }
+
     },
 
     clearList: () => {
@@ -131,16 +158,13 @@ const view = {
         }
     },
 
-    getPokemon: (idOrName, source) => {
-        controller.getPokemonByIdOrName(idOrName, source);
+    getPokemon: (id, source) => {
+        controller.getPokemonByIdOrName(id, source);
+        controller.addRecentlyViewedPokemonToLocalStorage(id);
     },
 
     showPokemonDescription: function (id) {
         this.getPokemon(id, 'show_pokemon');
-    },
-
-    showListOfPokemons: () => {
-        controller.getListOfPokemons();
     },
 
     showError: function () {
@@ -194,16 +218,22 @@ const controller = {
                 model.listOfPokemons = [...model.listOfPokemons, pokemon];
             }
 
-            // Espera a completar la lista de pokémons llamados antes de renderizarla
-            if (model.listOfPokemons.length === model.params.offset && source !== 'show_pokemon') {
-                view.render('list');
-            }
-
-            // Renderiza unicamente el pokémon consultado
-            if (source === 'show_pokemon') {
-                view.render('pokemon');
+            // Añade cada pokémon iterado a listOfRecentlyViewedPokemons
+            if (source === 'recently') {
+                model.listOfRecentlyViewedPokemons = [...model.listOfRecentlyViewedPokemons, pokemon];
             }
         }
+
+        // Renderiza unicamente el pokémon consultado
+        if (source === 'show_pokemon') {
+            view.render('pokemon');
+        }
+
+        if (model.listOfPokemons.length % 9 === 0 && source !== 'recently' && source !== 'show_pokemon') {
+            view.render('list');
+            document.getElementById('spinner').style.display = 'none';
+        }
+
     },
 
     getListOfPokemons: async function () {
@@ -219,27 +249,38 @@ const controller = {
 
         model.params.offsetApiUrl = data.next;
 
-        for (let pokemon in data.results) {
-            model.params.offset += 1;
-            this.getPokemonByIdOrName(data.results[pokemon].name);
+        for (let pokemon in data.results) {     
+            await this.getPokemonByIdOrName(data.results[pokemon].name);
         }
+    },
+
+    getListOfRecentlyViewedPokemons: async function () {
+        let recentlyViewedPokemonsInLocalStorage = JSON.parse(localStorage.getItem('recently-viewed-pokemons'))
+        for (let recentlyPokemon in recentlyViewedPokemonsInLocalStorage) {
+            await this.getPokemonByIdOrName(recentlyViewedPokemonsInLocalStorage[recentlyPokemon], 'recently');
+        }
+        view.render('recently');
+    },
+
+    addRecentlyViewedPokemonToLocalStorage: function (id) {
+        let pokemonsInLocalStorage = JSON.parse(localStorage.getItem('recently-viewed-pokemons')) || [];
+        pokemonsInLocalStorage.push(id);
+        pokemonsInLocalStorage = [...new Set(pokemonsInLocalStorage)];
+        localStorage.setItem('recently-viewed-pokemons', JSON.stringify(pokemonsInLocalStorage.slice(-3)));
     }
 }
 
+
 controller.getListOfPokemons();
+controller.getListOfRecentlyViewedPokemons();
 
 function addScrollListener() {
     window.addEventListener('scroll', () => {
-        const {
-            scrollTop,
-            scrollHeight,
-            clientHeight
-        } = document.documentElement;
-        if ((clientHeight + scrollTop) > scrollHeight - 5) {
-            if (model.listOfPokemons.length >= 9) {
-                controller.getListOfPokemons();
-            }
+        if (window.scrollY + window.innerHeight >=
+            document.documentElement.scrollHeight) {
+            controller.getListOfPokemons();
+            document.getElementById('spinner').style.display = 'block';
         }
     })
 }
-addScrollListener()
+addScrollListener();
