@@ -55,7 +55,7 @@ html body .navbar form button {
 html body .list {
   display: grid;
   grid-template-columns: repeat(1, 90%);
-  padding: 120px 5px 250px;
+  padding: 0px 5px 250px;
   justify-content: center;
 }
 html body .list .list__card {
@@ -71,6 +71,7 @@ html body .list .list__card {
   grid-template-columns: 20% 60%;
   cursor: pointer;
   /* id */
+  /* name */
   /* types */
 }
 html body .list .list__card:hover {
@@ -116,6 +117,54 @@ html body .list .list__card :nth-child(4) div:nth-of-type(even) {
   width: 45%;
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+html body .recently {
+  padding: 120px 5px 10px;
+  background-color: rgb(253, 255, 131);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+}
+html body .recently p {
+  grid-column: 1/4;
+  grid-row: 1/3;
+  text-align: center;
+}
+html body .recently .list__card {
+  border-radius: 8px;
+  text-transform: capitalize;
+  height: 7vh;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  /* id */
+  /* name */
+}
+html body .recently .list__card:hover {
+  background-color: rgb(253, 255, 131);
+}
+html body .recently .list__card:hover img {
+  transform: rotate(-10deg);
+  height: 122.5%;
+  left: 40%;
+  transition: 1s;
+}
+html body .recently .list__card img {
+  height: 120%;
+  position: absolute;
+  left: 30%;
+}
+html body .recently .list__card .card__id {
+  margin-left: 10%;
+  grid-row: 1/3;
+  font-size: 3vh;
+  font-weight: 400;
+}
+html body .recently .list__card :nth-child(3) {
+  display: none;
+  font-size: 2.2vh;
+  align-self: flex-end;
+  padding-bottom: 4%;
+  grid-row: 1/2;
 }
 html body .modal {
   display: none;
@@ -186,6 +235,28 @@ html body .modal .modal__card .modal__content .modal__stats div {
   text-align-last: justify;
   background-color: inherit;
 }
+html body .spinner img {
+  position: fixed;
+  bottom: 0%;
+  left: 33%;
+  height: 15%;
+  animation-duration: 4s;
+  animation-name: pokeball;
+}
+@keyframes pokeball {
+  0% {
+    bottom: 0%;
+  }
+  25% {
+    bottom: 20%;
+  }
+  50% {
+    bottom: 10%;
+  }
+  100% {
+    bottom: 0%;
+  }
+}
 
 @media only screen and (min-width: 541px) {
   html body .navbar {
@@ -199,7 +270,7 @@ html body .modal .modal__card .modal__content .modal__stats div {
     grid-column: 1/2;
   }
   html body .navbar p {
-    font-size: 4vh;
+    font-size: 2vh;
     grid-row: 2/3;
     grid-column: 2/3;
   }
@@ -208,7 +279,7 @@ html body .modal .modal__card .modal__content .modal__stats div {
     grid-column: 3/4;
   }
   html body .list {
-    padding: 60px 5px 250px;
+    padding: 0px 5px 250px;
   }
   html body .list .list__card {
     height: 16vh;
@@ -225,6 +296,24 @@ html body .modal .modal__card .modal__content .modal__stats div {
   html body .list .list__card :nth-child(4) {
     width: 80%;
     font-size: 1.2vw;
+  }
+  html body .recently {
+    padding: 60px 5px 10px;
+  }
+  html body .recently .list__card {
+    /* name */
+  }
+  html body .recently .list__card img {
+    height: 120%;
+    position: absolute;
+    left: 40%;
+  }
+  html body .recently .list__card :nth-child(3) {
+    display: block;
+    font-size: 1.4vw;
+    left: 20%;
+    position: relative;
+    bottom: -50%;
   }
   html body .modal .modal__card {
     margin: 4% auto;
@@ -298,6 +387,15 @@ html body .modal .modal__card .modal__content .modal__stats div {
     /* name */
     /* types */
   }
+  html body .list .list__card:hover {
+    background-color: rgb(253, 255, 131);
+  }
+  html body .list .list__card:hover img {
+    transform: rotate(-10deg);
+    height: 122.5%;
+    left: 50%;
+    transition: 1s;
+  }
   html body .list .list__card img {
     height: 100%;
     left: 65%;
@@ -315,6 +413,21 @@ html body .modal .modal__card .modal__content .modal__stats div {
   html body .list .list__card :nth-child(4) {
     width: 60%;
     font-size: 2vh;
+  }
+  html body .recently {
+    padding: 60px 5px 10px;
+  }
+  html body .recently .list__card {
+    cursor: pointer;
+  }
+  html body .recently .list__card:hover {
+    background-color: rgb(254, 255, 182);
+  }
+  html body .recently .list__card:hover img {
+    transform: rotate(0deg);
+    height: 122.5%;
+    left: 40%;
+    transition: 1s;
   }
   html body .modal .modal__card {
     width: 65%;
