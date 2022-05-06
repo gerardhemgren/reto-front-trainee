@@ -196,11 +196,7 @@ html body .modal .modal__card button {
   color: white;
   cursor: pointer;
 }
-html body .modal .modal__card .modal__content {
-  /* name */
-  /* weight */
-  /* base experience */
-}
+
 html body .modal .modal__card .modal__content div {
   text-transform: capitalize;
 }
@@ -300,9 +296,7 @@ html body .spinner img {
   html body .recently {
     padding: 60px 5px 10px;
   }
-  html body .recently .list__card {
-    /* name */
-  }
+
   html body .recently .list__card img {
     height: 120%;
     position: absolute;
@@ -329,11 +323,7 @@ html body .spinner img {
     font-size: 3.5vh;
     color: white;
   }
-  html body .modal .modal__card .modal__content {
-    /* name */
-    /* weight */
-    /* base experience */
-  }
+
   html body .modal .modal__card .modal__content img {
     height: 70%;
     left: 65%;
@@ -436,11 +426,7 @@ html body .spinner img {
   html body .modal .modal__card button {
     right: 20%;
   }
-  html body .modal .modal__card .modal__content {
-    /* name */
-    /* weight */
-    /* base experience */
-  }
+
   html body .modal .modal__card .modal__content img {
     height: 60%;
     left: 55%;
